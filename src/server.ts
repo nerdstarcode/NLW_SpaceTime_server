@@ -1,8 +1,13 @@
 import fastify from 'fastify';
-import { PrismaClient } from '@prisma/client'
-const app = fastify();
-const prisma = new PrismaClient();
+import { memoriesRoutes } from './routes/memories';
+import cors from '@fastify/cors'
 
+const app = fastify();
+
+app.register(cors,{
+    origin: true, //todas as urls de front podem acessar o backend,
+    // origin: ['http://localhost:3333', 'dev', 'qa', 'prod]
+})
 app.get('/hello', async () => {
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -28,16 +33,7 @@ app.get('/hello', async () => {
     return response.choices[0].text
 })
 
-app.get('/users', async (req, res) => {
-    const users = await prisma.user.findMany()
-    .then(users => {
-        res.code(200).send(users)
-    })
-    .catch(err => {
-        res.send(err)
-    })
-
-})
+app.register(memoriesRoutes)
 
 app.listen({
     port: 3333,
