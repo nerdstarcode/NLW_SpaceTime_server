@@ -1,12 +1,18 @@
 import fastify from 'fastify';
-import { memoriesRoutes } from './routes/memories';
 import cors from '@fastify/cors'
+import jwt from '@fastify/jwt'
+import 'dotenv/config'
+import { memoriesRoutes } from './routes/memories';
+import { authRoutes } from './routes/auth';
 
 const app = fastify();
 
-app.register(cors,{
+app.register(cors, {
     origin: true, //todas as urls de front podem acessar o backend,
     // origin: ['http://localhost:3333', 'dev', 'qa', 'prod]
+})
+app.register(jwt, {
+    secret: 'spacetime',
 })
 app.get('/hello', async () => {
     var myHeaders = new Headers();
@@ -33,6 +39,7 @@ app.get('/hello', async () => {
     return response.choices[0].text
 })
 
+app.register(authRoutes)
 app.register(memoriesRoutes)
 
 app.listen({
