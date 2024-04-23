@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "npx fastify src/server.ts", 
+    "start": "fastify src/server.ts", 
     "start:dev": "nodemon src/server.ts",  
     "start:prod": "forever start src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1",
